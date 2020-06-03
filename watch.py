@@ -2,16 +2,25 @@
 import time
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
+deleted = []
 
 
 class MyHandler(FileSystemEventHandler):
+    def on_deleted(self, event):
+        deleted.append(str(event.src_path))
+
+    def on_created(self, event):
+        temp = str(event.src_path)
+        if event.is_directory:
+            return
+        if ".txt" not in temp:
+            print(f'Encrypt Alert: {event.event_type}  path : {event.src_path}')
+
     def on_modified(self, event):
         temp = str(event.src_path)
-        n = len(temp)
-        if event.is_directory:
-            print("change is OK")
-        if temp[n-1] != '/':
-            print(f'Encrypt Alert: {event.event_type}  path : {event.src_path}')
+        if event.is_directory or '.gousputstream' in temp:
+            return
+        print(f'Encrypt Alert: {event.event_type}  path : {event.src_path}')
 
 
 if __name__ == "__main__":
