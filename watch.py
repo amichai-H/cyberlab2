@@ -8,7 +8,6 @@ class MyHandler(FileSystemEventHandler):
     def on_modified(self, event):
         temp = str(event.src_path)
         n = len(temp)
-        # if temp[n-1] != '/':
         print(f'Encrypt Alert: {event.event_type}  path : {event.src_path}')
 
 
